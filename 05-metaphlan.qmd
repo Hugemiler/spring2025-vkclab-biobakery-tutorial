@@ -1,0 +1,87 @@
+---
+title: "MetaPhlAn - Taxonomic Profiling"
+format: html
+---
+
+# 🧬 Taxonomic Profiling with MetaPhlAn
+
+MetaPhlAn identifies microbial taxa directly from your quality-controlled reads using a marker gene database. In our case, we’ll use the **CHOCOPhlAn** reference database and the  **Bowtie2** alignment software.
+
+---
+
+## 📂 Step 1: Move into the metaphlan folder
+
+```bash
+cd ~/hesse-tutorial/metaphlan
+```
+
+---
+
+## 🔁 Step 2: Combine input reads
+
+before profiling with **MetaPhlAn**, You’ll need to concatenate your paired and unmatched reads into a single fastq.gz file:
+
+```bash
+cat ../kneaddata/{{sample_ID}}*paired*.fastq.gz ../kneaddata/{{sample_ID}}*unmatched*.fastq.gz > sample.joined.fastq.gz
+```
+
+---
+
+## 🚀 Step 3: Run MetaPhlAn
+
+Just like **KneadData**, you can inspect the version and help file for `metaphlan` as well. 
+
+```bash
+metaphlan {{sample_ID}}.joined.fastq.gz {{sample_ID}}_profile.tsv \
+  --bowtie2out {{sample_ID}}_bowtie2.bz2 \
+  --samout {{sample_ID}}.sam \
+  --input_type fastq \
+  --nproc 4 \
+  --bowtie2db /mnt/databases/metaphlan \
+  --index mpa_v31_CHOCOPhlAn_201901
+```
+
+---
+
+## 🗃️ Step 4: Inspect the output
+
+With the command arguments we used, MetaPhlAn's output will consist of 3 files:
+
+- `{{sample_ID}}_profile.tsv`: your main taxonomic profile
+- `{{sample_ID}}.sam`: the alignment file (can be deleted or compressed)
+- `{{sample_ID}}_bowtie2.bz2`: raw Bowtie2 output
+
+Although we are mainly interested in the main taxonomic profile, sometimes the aligment file can be interesting for different types of analysis. However, due to its size, we can optionally compress the `.sam` file:
+
+```bash
+bzip2 sample.sam
+```
+
+As we mentioned, the product of interest from taxonomic profiling is the main taxonomci profile in `{{sample_ID}}_profile.tsv`. We can inspect this file using the tools previously used in this tutorial (`cat`, `head`, `tail`, `vim`). Each option will have different use-cases in different situations. There are many other commands that can be used to that end. One od them is `less`. Let's check how `less` helps us exhibit a multiline file and navigat through it:
+
+```bash
+less {{sample_ID}}_profile.tsv
+```
+
+---
+
+## 🏅 Badge Unlocked: 🧬 Taxon Tamer
+
+You’ve successfully profiled your cleaned reads with MetaPhlAn and generated a taxonomic profile. _You now wield the power to name the unseen — welcome to the microbial elite._
+
+```{=html}
+<button onclick="collectBadge('taxon-tamer')">🏅 Collect Badge: Taxon Tamer</button>
+
+<script>
+function collectBadge(badgeName) {
+  const badges = JSON.parse(localStorage.getItem('badges') || '[]');
+  if (!badges.includes(badgeName)) {
+    badges.push(badgeName);
+    localStorage.setItem('badges', JSON.stringify(badges));
+    alert('Badge collected: ' + badgeName);
+  } else {
+    alert('You already collected this badge!');
+  }
+}
+</script>
+```

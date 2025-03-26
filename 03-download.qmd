@@ -1,0 +1,181 @@
+---
+title: "Downloading Sequences"
+format: html
+---
+
+# 📥 Acquiring Sequence Data
+
+> _From: Sequencing Facility <noreply@genomicscore.org>_  
+> _To: HesseLab_  
+> _Subject: Your Data is Ready_  
+>
+> Dear team,
+>
+> Your sequencing run is complete. Files are available for download at the following link:  
+> [Dropbox Download](https://www.dropbox.com/scl/fo/vkb0srrr8cnv3k36zikh7/AELsDad7-V0WJ-hEZU4t_5k?rlkey=6a7l17psot7sl5woswapyxyn9&st=libnokp3&dl=1)
+>
+> Best regards,  
+> The Sequencing Core
+
+---
+
+## 📂 Step 1: Go to the `zipfiles` folder
+
+We'll begin by downloading the data into the `zipfiles` directory you created earlier.
+
+```bash
+cd ~/hesse-tutorial/zipfiles
+```
+
+---
+
+## 🌐 Step 2: Download the file using `wget`
+
+```bash
+wget "https://www.dropbox.com/scl/fo/vkb0srrr8cnv3k36zikh7/AELsDad7-V0WJ-hEZU4t_5k?rlkey=6a7l17psot7sl5woswapyxyn9&st=libnokp3&dl=1"
+```
+
+You’ll likely see a long, messy filename — that's fine! We'll rename it next.
+
+---
+
+## 📝 Step 3: Rename the downloaded file
+
+Use `ls` to list the files in the directory:
+
+```bash
+ls
+```
+
+You should see the filename downloaded by `wget`. Use `mv` ("move") to rename the file to something more readable:
+
+```bash
+mv {{your_file_name}} tutorial-sequences.zip
+```
+
+
+
+
+---
+
+## 📦 Step 4: Unzip the contents to your `rawfastq` folder
+
+```bash
+unzip tutorial-sequences.zip -d ../rawfastq
+```
+
+> `-d` specifies the target directory for unzipping
+
+---
+
+## 🔍 Step 5: Explore the FASTQ files
+
+Move to the `rawfastq` directory:
+
+```bash
+cd ../rawfastq
+```
+
+List the files:
+
+```bash
+ls
+```
+
+---
+
+## 🧪 Step 6: How many reads per file?
+
+FASTQ format stores each read in a certain numebr of lines. Let’s figure out this number by inspecting the first few lines (`head` for "heading") of a file:
+
+```bash
+zcat sample_file.fastq.gz | head -n 20
+```
+
+::: callout-tip
+The `|` is called a "pipe operator". It will insert the output of a command as the first argument to the subsequent command. In this case, we are `cat`-ing the content of the `sample_file.fastq.gz` and, simultaneously, passing this content on to the `head` command, with the optional flag `-n` which states the **N**umber of heading lines to print. The `tail` command is the counterpart of `head`, and will print the **TAIL**ing lines of a text file.
+:::
+
+> You will see 5 complete reads on the first 20 lines. This means FASTQ format stores each read in **4 lines**. 
+
+---
+
+### 🔁 Count total reads per file
+
+Now that we know each read is 4 lines, we can count the number of lines in a file and divide that number by 4 to obtain the total number of raw reads:
+
+```bash
+zcat sample_file.fastq.gz | head -n 20
+```
+::: callout-tip
+The `wc` command comes from "word-count" and can count different aggregations of characters. In our case, by passing the `-l` flag, we ask that it counts the number of **L**ines.
+:::
+
+Instead of running this command mauanlly for every file, we can use a loop to print the **read count** for each file:
+
+```bash
+for file in *.fastq.gz; do
+  echo -n "$file: "
+  zcat "$file" | wc -l
+done
+```
+
+::: callout-tip
+On a bash terminal, the $ (dollar sign) looks up a variable name and substitutes it for the variable value in your command.
+So, if you have, say, a variable called `OUTPUT_FILE` and the value of this variable was `seq001_clean.fa`, calling the command
+
+```bash
+process --input raw_sequence.fa --output $OUTPUT_FILE
+```
+
+would internally evaluate to
+
+```bash
+process --input raw_sequence.fa --output seq001_clean.fa
+```
+
+-----
+
+When you loop through a list like in the command
+
+```bash
+for file in *.fastq.gz; do
+  echo -n "$file: "
+  zcat "$file" | wc -l
+done
+```
+
+The variable `file` stores each filename that matches `*.fastq.gz`. to reference the filename stores in the `file` variable, we use `$file`!
+:::
+
+> Divide each output by 4 to get the **read count**.
+
+---
+
+::: callout-tip
+Create a shell script later to summarize read counts automatically!
+One easy to do that is to pipe the result of `echo` to the `awk` command.
+:::
+
+---
+
+## 🏅 Badge Unlocked: 📥 Web Wrangler
+
+You used the `wget` command-line tool to download the sequences shared by the sequencing facility, and inspected the number of lines in each file to estimate the reading depth!
+
+```{=html}
+<button onclick="collectBadge('web-wrangler')">🏅 Collect Badge: Web Wrangler</button>
+
+<script>
+function collectBadge(badgeName) {
+  const badges = JSON.parse(localStorage.getItem('badges') || '[]');
+  if (!badges.includes(badgeName)) {
+    badges.push(badgeName);
+    localStorage.setItem('badges', JSON.stringify(badges));
+    alert('Badge collected: ' + badgeName);
+  } else {
+    alert('You already collected this badge!');
+  }
+}
+</script>
+```

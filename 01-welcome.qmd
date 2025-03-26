@@ -1,0 +1,57 @@
+---
+format: html
+---
+
+# 📬 Welcome to HesseLab, Intern!
+
+> _From: Dr. L. V. Hesse <lvhesse@hesselab.org>_  
+> _To: You_  
+> _Subject: Your First Assignment_
+>
+> Dear Intern,
+> 
+> Welcome aboard! We're thrilled to have you join **HesseLab** for your summer internship. Your curiosity, grit, and application stood out in the applicant pool—and we believe you'll thrive in our high-throughput, high-stakes environment.
+> 
+> Your **first mission** is already on the table:  
+> 🧬 A fresh batch of **sequencing data** has just arrived from our partner facility.
+> 
+> You are to:
+> 
+> 1. Securely retrieve and extract sequencing files
+> 2. Clean, trim and quality control the sequencing data
+> 2. Profile the microbial communities taxonomically and functionally (gene functions)
+> 
+> You’ll be using the **BioBakery suite**, one of the industry’s most trusted pipelines for metagenomic profiling. <ins>In compliance with our data handling protocols and bioethics regulations, your analysis must be conducted inside the **HesseHub** — our secure, containerized Linux-based compute environment.</ins> All necessary tools are pre-installed in the HesseHub environment.
+>
+> I asked IT to generate your login credentials. They are pasted below:
+>
+> `username: hessehub`
+> 
+> `password: hessehub`
+> 
+> Remember: In HesseLab, we don’t just process data.  
+> We **reveal the invisible**.
+> 
+> Good luck.
+> 
+> ---
+> 
+> Sincerely,  
+> **Dr. L. V. Hesse**  
+> Principal Investigator, HesseLab
+
+# 🧭 Tutorial Roadmap
+
+This tutorial will guide you through:
+
+- 🖥️ [Setting up](02-workdir.qmd)
+- 📥 [Getting sequence data](03-download.qmd)
+- 🧼 [Cleaning & QCing with `kneaddata`](04-kneaddata.qmd)
+- 🧬 [Taxonomic Profiling with `metaphlan`](05-metaphlan.qmd)
+- 🧬 [Functional Profiling with `humann`](06-humann.qmd)
+
+If this is your first time in a secure Linux workspace, don’t worry—we’ll walk you through each step.
+
+::: callout-tip
+💡 Tip: Run all commands **inside the HesseHub shell** unless told otherwise.
+:::

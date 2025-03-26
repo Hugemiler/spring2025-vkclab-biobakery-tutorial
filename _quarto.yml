@@ -1,0 +1,30 @@
+project:
+  type: website
+  output-dir: _site
+
+website:
+  title: "[Spring 2025]\nVKCLab BioBakery Tutorial\n@ Wellesley College"
+  sidebar:
+    collapse-level: 1
+    contents:
+      - text: "Welcome!"
+        file: 01-welcome.qmd
+      - text: "Access and setup"
+        file: 02-workdir.qmd
+      - text: "Downloading sequences"
+        file: 03-download.qmd
+      - text: "KneadData - QC and cleaning"
+        file: 04-kneaddata.qmd
+      - text: "MetaPhlAn - Taxonomic profiling"
+        file: 05-metaphlan.qmd
+      - text: "HUMAnN - Functional profiling"
+        file: 06-humann.qmd
+      - text: "Certificate"
+        file: 99-certificate.qmd
+format:
+  html:
+    theme: cosmo
+    embed-resources: true
+    self-contained: true
+    toc: true
+    toc-depth: 3

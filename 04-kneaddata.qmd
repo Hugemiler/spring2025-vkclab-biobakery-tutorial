@@ -1,0 +1,238 @@
+---
+title: "KneadData - QC and Cleaning"
+format: html
+---
+
+# 🧼 Quality Control with KneadData
+
+In this section, you'll learn to run `kneaddata` to perform:
+
+- Adapter trimming
+- Host (human) sequence removal
+- Quality filtering
+
+---
+
+## 📂 Step 1: Move into your kneaddata directory
+
+```bash
+cd ~/hesse-tutorial/kneaddata
+```
+
+---
+
+## ⚙️ Step 2: Understand the key arguments
+
+`kneaddata` is installed as a binary executable file available for use via command-line.
+Many analysys software work like that - after you download and install it, you can call it using a linux command.
+
+When software developers build a new program, they usually bundle a few standard options to the command.
+One of them is the `--version` flag, which prints the software version installed/available to run. Try it:
+
+```bash
+kneaddata --version
+```
+
+Another very common option is the `--help` flag, which prints out a quick help guide for the command. You can access it with:
+```bash
+kneaddata --help
+```
+
+### Argument breakdown:
+
+- `--input`: your raw FASTQ files (R1 and R2)
+- `--reference-db`: human genome to remove host reads
+- `--output`: directory for output files
+- `--threads`: number of CPU threads to use
+- `--processes`: how many samples to process in parallel (use 1 or 2)
+- `--output-prefix`: custom prefix for output files
+- `--trimmomatic`: location of trimming tool
+
+## 🚀 Step 3: Run kneaddata
+
+Below is an example `kneaddata` run tailored to our system. Try to run this example, replacing :
+
+```bash
+kneaddata \
+  --input ../rawfastq/{{R1_file}} \
+  --input ../rawfastq/{{R2_file}} \
+  --reference-db /mnt/databases/kneaddata/hg37dec_v0.1 \
+  --output ./ \
+  --threads 2 \
+  --processes 2 \
+  --output-prefix {{sample_ID}}_kneaddata \
+  --trimmomatic /opt/conda/share/trimmomatic
+```
+
+> Note: You may use fewer threads if computation resources are limited, or more threads if they are plentiful.
+
+---
+
+## 📄 Step 4: Check the log file
+
+After running, inspect the log file:
+
+```bash
+cat tutorial_kneaddata_kneaddata.log
+```
+
+Look for:
+- Total reads
+- Reads after trimming
+- Reads removed as contaminants
+- Reads remaining
+
+---
+
+## 🔎 Step 5: Understand the output files
+
+::: callout-note
+Several parts of this section were sourced from the original `kneaddata` documentation available at the [KneadData github](https://github.com/biobakery/kneaddata), and from the `trf` (Tandem Repeats Finder) documentation, available at [TRF github](https://github.com/Benson-Genomics-Lab/TRF) and the [TRF website](https://tandem.bu.edu/trf/trf.html).
+:::
+
+After running `kneaddata` ona single pair of `{R1,R2}` raw sequence files, you should get a collection of files starting wth the prefix you passed to `kneaddata` via the `--output-prefix` argument flag. Below is a sample collection of kneaddata outputs:
+
+1. `{{sample_ID}}_kneaddata.log`
+2. `{{sample_ID}}_kneaddata.repeats.removed.1.fastq`
+3. `{{sample_ID}}_kneaddata.repeats.removed.2.fastq`
+4. `{{sample_ID}}_kneaddata.repeats.removed.unmatched.1.fastq`
+5. `{{sample_ID}}_kneaddata.repeats.removed.unmatched.2.fastq`
+6. `{{sample_ID}}_kneaddata.trimmed.1.fastq`
+7. `{{sample_ID}}_kneaddata.trimmed.2.fastq`
+8. `{{sample_ID}}_kneaddata.trimmed.single.1.fastq`
+9. `{{sample_ID}}_kneaddata.trimmed.single.2.fastq`
+10. `{{sample_ID}}_kneaddata_hg37dec_v0.1_bowtie2_paired_contam_1.fastq`
+11. `{{sample_ID}}_kneaddata_hg37dec_v0.1_bowtie2_paired_contam_2.fastq`
+12. `{{sample_ID}}_kneaddata_hg37dec_v0.1_bowtie2_unmatched_1_contam.fastq`
+13. `{{sample_ID}}_kneaddata_hg37dec_v0.1_bowtie2_unmatched_2_contam.fastq`
+14. `{{sample_ID}}_kneaddata_paired_1.fastq`
+15. `{{sample_ID}}_kneaddata_paired_2.fastq`
+16. `{{sample_ID}}_kneaddata_unmatched_1.fastq`
+17. `{{sample_ID}}_kneaddata_unmatched_2.fastq`
+
+_Before we start diving into what each of those files contain, we need to understand the pair/mate relashinship between the `{R1,R2}` raw sequence files_. The paired-end sequencer produces a pair of files in which every sequence is also paired or mated to its equivalent on the other file. Mates appear in the same position at each file, so the 10th read on the `R1` file is the mate or pair of the 10th read on the `R2` file.
+
+Whenever some filtering analysis (decontamination, trimming adapter reads, removal of tandem repeats) happens on a pair of mates, there are three scenarios possible:
+
+I. Both reads in the pair pass the filter
+II. The read in the first mate passes, but the one in the second does not pass.
+III. The read in the second mate passes, but the one in the first does not pass.
+
+In the first case, reads will end up in the `*_paired` files, which will have the same size and length in the end. On cases II and III, reads will end up in the `*_unmatched` files.
+
+Just because a read was `unmatched`, it does not mean that it should be removed from analysis. Although the majority of QC-passing reads do end up in clean `paired` files, reads in the final clean `unmatched` files also carry biologically relevant information.
+
+### Kneaddata Log
+
+File **(1)** is the log for the `kneaddata` command. It keeps track of the program's internal processed, prints out the steps performed and some mid-run validations, as well as the read counts that result from each of the splitting steps.
+
+### Tandem repeats
+
+Files **(2, 3, 4 and 5)** contain the tandem repeats removed by `trf`. While **2** and **3** contain paired/matched tandem repeats, **3** and **4** contain unpaired/unmatched tandem repeats. _Those reads should not be used for metagenomic profiling._
+
+:::{.callout-note collapse="true"}
+# Understading Tandem Repeats
+
+Tandem repeats are regions in DNA where a short nucleotide sequence is repeated consecutively.
+
+Imagine you have a stretch of DNA where a short sequence - say, "ACGT" - is repeated several times in a row (e.g., ACGTACGTACGT). When a sequencing machine produces a short read from within this repeated region, that read might be something like "ACGTACGT." Because the repeated sequence is identical (or nearly identical) across multiple copies, that same read could originate from any one of the repeated segments.
+
+This could cause ambiguity in mapping the sequence to genomes. A short read from a tandem repeat lacks the unique flanking sequences that typically help to pinpoint its exact location. If a read is entirely made up of the repeated motif, every copy of the repeat in the genome is an equally good match.
+
+Additionally, read mapping tools align each read to the reference genome by looking for the best match. In the case of tandem repeats, the read will perfectly match several locations where the repeat occurs. The mapper might then assign the read randomly to one location, report all possible locations, or lower the confidence (mapping quality) of that read because it can't decide which location is the true source.
+
+This ambiguity means that the read doesn’t provide reliable information about its true origin. When many reads from tandem repeats are mapped in this way, it can lead to misrepresentation of sequence abundance and skew the analysis, making it difficult to accurately profile the metagenome.
+
+In summary, because the repeated sequence is present in multiple, nearly identical copies, the mapping algorithms cannot distinguish which copy the read came from. This results in the read “mapping” to several locations, thus introducing uncertainty into the analysis.
+:::
+
+### Trimmed Adapter Reads
+
+Files **(6, 7, 8 and 9)** contain the trimmed adapter reads removed by `trimmomatic`. While **2** and **3** contain paired/matched trimmed adapter reads, **3** and **4** contain unpaired/unmatched trimmed adapter reads. _Those reads should not be used for metagenomic profiling._
+
+:::{.callout-note collapse="true"}
+# Understading Adapter Reads
+
+Adapter sequences are synthetic DNA fragments added to your sample DNA during library preparation to facilitate sequencing. When the sequencer reads past the insert—especially if the insert is short—it can start reading these adapter sequences. Adapter sequences are artificial and do not belong to the organism’s genome. If left untrimmed, they become part of your read data and can mislead downstream analyses, as they do not represent any genuine biological signal.
+
+If the adapter segment is not removed fromthe read, the adapter portion may not align properly to the reference genome. This results in poor-quality alignments or even mismapping. The alignment algorithms might interpret the adapter sequence as part of the biological sequence, which could lead to errors in identifying the true genomic location.
+
+<!-- Untrimmed adapters can cause artifacts such as chimeric sequences or false variant calls. These errors can distort abundance estimates, mislead taxonomic assignments, and affect assembly quality—much like the issues caused by tandem repeats, but with the added problem that adapters are completely artificial. -->
+
+Also, adapter regions typically have lower quality scores. Retaining these low-quality bases can decrease the overall quality of the dataset and introduce noise into the analysis.
+
+By trimming adapter sequences, you ensure that only the genuine sample DNA is used in subsequent analyses, which improves the accuracy of read mapping and the reliability of your metagenomic profiling.
+:::
+
+### Human-mapping Reads
+
+Files **(10, 11, 12 and 13)** contain the sequence reads that map to the human genome. _Those reads should not be used for metagenomic profiling._
+
+:::{.callout-note collapse="true"}
+# Understading Human Reads
+
+`hg37` is a short name that references the **GRCh37 Genome Reference Consortium Human Build 37**. It is a database that contains the humangenome.
+
+In many metagenomic samples, especially those taken from human-associated environments (e.g., gut, skin, or clinical samples), a significant portion of the reads can originate from the host rather than the microbial community. Removing reads that map to `hg37` is therefore a critical step to ensure that analyses focus on the microbial content.
+
+Retaining host DNA can lead to misleading results by diluting the signal from microbial genomes. When human reads are present, they may falsely elevate background noise, complicate the detection of low-abundance organisms, and skew abundance estimates.
+
+Also, Filtering out human reads reduces the overall data volume, allowing downstream analyses such as taxonomic classification and assembly to be more efficient and focused solely on the sequences of interest.
+
+In summary, removing reads that map to the human genome ensures that the analysis remains targeted, accurate, and ethical, focusing solely on the microbial sequences while reducing potential contamination and data processing burdens.
+:::
+
+::: callout-warning
+The most important aspect of human data removal belongs in a separate callout: <ins>**Human genetic data is sensitive!**</ins> By removing reads that map to hg37, researchers not only comply with privacy standards but also mitigate risks associated with handling identifiable human genetic information.
+
+To perform downstream analysis that includes human reads for any reason, the ethical and security requirements are severely esclated, sometimes requiring extremely isolated and closely-controlled computational environments - _even more restrictive than `HesseHub`! 😉_
+:::
+
+### Clean metageonmic reads
+
+_**Finally**_, files **(14, 15, 16 and 17)** contain the reads that passed all operations, and should contain only the biologicallymeaningful, non-human, non-repeated reads. _**Those reads are the only ones that should be used for metagenomic profiling!**_
+
+## 🧹 Step 6: Remove unnecessary files and compress outputs
+
+Now that you understand the composition of output files, you can optionally clean up intermediate files (`trimmed`, `repeats`, and `bowtie2` host-alignments):
+
+```bash
+rm *trimmed* *repeats* *bowtie2*
+```
+
+::: callout-tip
+The `rm` (from "**R**e**M**ove") command will delete all files matching the patterns provided as arguments
+:::
+
+> This helps save space and reduces clutter for the next steps.
+>
+> Removing human reads also has the added benefit of relieving your storage of dealing with human-mapping reads, which could have escalated storage requirements.
+
+We can save even more space if we compress the `.fastq` files using `gzip`. After you use `ls` to confirm that only the `*paired*` and `*unmatched*` file remained from executing `rm`, you can run the following ocmmand to `gzip` all fastq files:
+
+```bash
+gzip *.fastq
+```
+
+---
+
+## 🏅 Badge Unlocked: 🧼 Clean Commander
+
+You used `kneaddata` to trim, decontaminate and remove tandem repeats from the downloaded sequences, and are ready to perform profiling on the clean sequence files!
+
+```{=html}
+<button onclick="collectBadge('clean-commander')">🏅 Collect Badge: Clean Commander</button>
+
+<script>
+function collectBadge(badgeName) {
+  const badges = JSON.parse(localStorage.getItem('badges') || '[]');
+  if (!badges.includes(badgeName)) {
+    badges.push(badgeName);
+    localStorage.setItem('badges', JSON.stringify(badges));
+    alert('Badge collected: ' + badgeName);
+  } else {
+    alert('You already collected this badge!');
+  }
+}
+</script>
+```

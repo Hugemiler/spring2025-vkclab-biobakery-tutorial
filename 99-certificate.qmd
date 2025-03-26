@@ -1,0 +1,54 @@
+---
+title: "HesseHub Certificate"
+format: html
+---
+
+```{=html}
+<h1>🎓 Certificate of Completion</h1>
+
+<p id="intro" style="text-align: center; font-size: 1.25rem; margin: 2rem 0;"></p>
+
+<ul id="badge-list" style="text-align: center;"></ul>
+
+<div id="date" style="text-align: center; margin-top: 2rem;"></div>
+
+<button onclick="window.print()">🖨️ Print Certificate</button>
+
+<div id="signature" style="text-align: right; margin-top: 3rem; font-family: 'Cursive';">
+  <p>Signed,</p>
+  <p>Dr. L. V. Hesse</p>
+  <p>Principal Investigator, HesseLab</p>
+</div>
+
+<script>
+const badgeNames = {
+  "script-sorcerer": "🏗️ Script Sorcerer",
+  "web-wrangler": "📥 Web Wrangler",
+  "clean-commander": "🧼 Clean Commander",
+  "taxon-tamer": "🧬 Taxon Tamer",
+  "function-forger": "🔥 Function Forger"
+};
+
+let name = localStorage.getItem("hessehub-name") || prompt("Enter your name for this certificate:");
+if (name) {
+  localStorage.setItem("hessehub-name", name);
+}
+
+const today = new Date();
+const dateStr = today.toLocaleDateString(undefined, {
+  year: "numeric", month: "long", day: "numeric"
+});
+
+document.getElementById("intro").innerHTML = `This is to certify that <strong>${name}</strong> has successfully earned the following badges during their internship at <strong>HesseHub</strong>.`;
+
+const earned = JSON.parse(localStorage.getItem('badges') || '[]');
+const list = document.getElementById("badge-list");
+earned.forEach(badge => {
+  const li = document.createElement("li");
+  li.textContent = badgeNames[badge] || badge;
+  list.appendChild(li);
+});
+
+document.getElementById("date").innerHTML = `<em>Awarded on ${dateStr}</em>`;
+</script>
+```

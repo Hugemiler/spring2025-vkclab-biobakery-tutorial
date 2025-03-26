@@ -1,0 +1,372 @@
+[
+  {
+    "objectID": "99-certificate.html",
+    "href": "99-certificate.html",
+    "title": "HesseHub Certificate",
+    "section": "",
+    "text": "🎓 Certificate of Completion\n\n\n\n\n\n\n\n🖨️ Print Certificate\n\n\n  Signed,\n  Dr. L. V. Hesse\n  Principal Investigator, HesseLab",
+    "crumbs": [
+      "Certificate"
+    ]
+  },
+  {
+    "objectID": "05-metaphlan.html",
+    "href": "05-metaphlan.html",
+    "title": "MetaPhlAn - Taxonomic Profiling",
+    "section": "",
+    "text": "MetaPhlAn identifies microbial taxa directly from your quality-controlled reads using a marker gene database. In our case, we’ll use the CHOCOPhlAn reference database and the Bowtie2 alignment software.\n\n\n\ncd ~/hesse-tutorial/metaphlan\n\n\n\n\nbefore profiling with MetaPhlAn, You’ll need to concatenate your paired and unmatched reads into a single fastq.gz file:\ncat ../kneaddata/{{sample_ID}}*paired*.fastq.gz ../kneaddata/{{sample_ID}}*unmatched*.fastq.gz &gt; sample.joined.fastq.gz\n\n\n\n\nJust like KneadData, you can inspect the version and help file for metaphlan as well.\nmetaphlan {{sample_ID}}.joined.fastq.gz {{sample_ID}}_profile.tsv \\\n  --bowtie2out {{sample_ID}}_bowtie2.bz2 \\\n  --samout {{sample_ID}}.sam \\\n  --input_type fastq \\\n  --nproc 4 \\\n  --bowtie2db /mnt/databases/metaphlan \\\n  --index mpa_v31_CHOCOPhlAn_201901\n\n\n\n\nWith the command arguments we used, MetaPhlAn’s output will consist of 3 files:\n\n{sample_ID}_profile.tsv: your main taxonomic profile\n{sample_ID}.sam: the alignment file (can be deleted or compressed)\n{sample_ID}_bowtie2.bz2: raw Bowtie2 output\n\nAlthough we are mainly interested in the main taxonomic profile, sometimes the aligment file can be interesting for different types of analysis. However, due to its size, we can optionally compress the .sam file:\nbzip2 sample.sam\nAs we mentioned, the product of interest from taxonomic profiling is the main taxonomci profile in {sample_ID}_profile.tsv. We can inspect this file using the tools previously used in this tutorial (cat, head, tail, vim). Each option will have different use-cases in different situations. There are many other commands that can be used to that end. One od them is less. Let’s check how less helps us exhibit a multiline file and navigat through it:\nless {{sample_ID}}_profile.tsv\n\n\n\n\nYou’ve successfully profiled your cleaned reads with MetaPhlAn and generated a taxonomic profile. You now wield the power to name the unseen — welcome to the microbial elite.\n🏅 Collect Badge: Taxon Tamer",
+    "crumbs": [
+      "MetaPhlAn - Taxonomic profiling"
+    ]
+  },
+  {
+    "objectID": "05-metaphlan.html#step-1-move-into-the-metaphlan-folder",
+    "href": "05-metaphlan.html#step-1-move-into-the-metaphlan-folder",
+    "title": "MetaPhlAn - Taxonomic Profiling",
+    "section": "",
+    "text": "cd ~/hesse-tutorial/metaphlan",
+    "crumbs": [
+      "MetaPhlAn - Taxonomic profiling"
+    ]
+  },
+  {
+    "objectID": "05-metaphlan.html#step-2-combine-input-reads",
+    "href": "05-metaphlan.html#step-2-combine-input-reads",
+    "title": "MetaPhlAn - Taxonomic Profiling",
+    "section": "",
+    "text": "before profiling with MetaPhlAn, You’ll need to concatenate your paired and unmatched reads into a single fastq.gz file:\ncat ../kneaddata/{{sample_ID}}*paired*.fastq.gz ../kneaddata/{{sample_ID}}*unmatched*.fastq.gz &gt; sample.joined.fastq.gz",
+    "crumbs": [
+      "MetaPhlAn - Taxonomic profiling"
+    ]
+  },
+  {
+    "objectID": "05-metaphlan.html#step-3-run-metaphlan",
+    "href": "05-metaphlan.html#step-3-run-metaphlan",
+    "title": "MetaPhlAn - Taxonomic Profiling",
+    "section": "",
+    "text": "Just like KneadData, you can inspect the version and help file for metaphlan as well.\nmetaphlan {{sample_ID}}.joined.fastq.gz {{sample_ID}}_profile.tsv \\\n  --bowtie2out {{sample_ID}}_bowtie2.bz2 \\\n  --samout {{sample_ID}}.sam \\\n  --input_type fastq \\\n  --nproc 4 \\\n  --bowtie2db /mnt/databases/metaphlan \\\n  --index mpa_v31_CHOCOPhlAn_201901",
+    "crumbs": [
+      "MetaPhlAn - Taxonomic profiling"
+    ]
+  },
+  {
+    "objectID": "05-metaphlan.html#step-4-inspect-the-output",
+    "href": "05-metaphlan.html#step-4-inspect-the-output",
+    "title": "MetaPhlAn - Taxonomic Profiling",
+    "section": "",
+    "text": "With the command arguments we used, MetaPhlAn’s output will consist of 3 files:\n\n{sample_ID}_profile.tsv: your main taxonomic profile\n{sample_ID}.sam: the alignment file (can be deleted or compressed)\n{sample_ID}_bowtie2.bz2: raw Bowtie2 output\n\nAlthough we are mainly interested in the main taxonomic profile, sometimes the aligment file can be interesting for different types of analysis. However, due to its size, we can optionally compress the .sam file:\nbzip2 sample.sam\nAs we mentioned, the product of interest from taxonomic profiling is the main taxonomci profile in {sample_ID}_profile.tsv. We can inspect this file using the tools previously used in this tutorial (cat, head, tail, vim). Each option will have different use-cases in different situations. There are many other commands that can be used to that end. One od them is less. Let’s check how less helps us exhibit a multiline file and navigat through it:\nless {{sample_ID}}_profile.tsv",
+    "crumbs": [
+      "MetaPhlAn - Taxonomic profiling"
+    ]
+  },
+  {
+    "objectID": "05-metaphlan.html#badge-unlocked-taxon-tamer",
+    "href": "05-metaphlan.html#badge-unlocked-taxon-tamer",
+    "title": "MetaPhlAn - Taxonomic Profiling",
+    "section": "",
+    "text": "You’ve successfully profiled your cleaned reads with MetaPhlAn and generated a taxonomic profile. You now wield the power to name the unseen — welcome to the microbial elite.\n🏅 Collect Badge: Taxon Tamer",
+    "crumbs": [
+      "MetaPhlAn - Taxonomic profiling"
+    ]
+  },
+  {
+    "objectID": "03-download.html",
+    "href": "03-download.html",
+    "title": "Downloading Sequences",
+    "section": "",
+    "text": "From: Sequencing Facility noreply@genomicscore.org\nTo: HesseLab\nSubject: Your Data is Ready\nDear team,\nYour sequencing run is complete. Files are available for download at the following link:\nDropbox Download\nBest regards,\nThe Sequencing Core\n\n\n\n\nWe’ll begin by downloading the data into the zipfiles directory you created earlier.\ncd ~/hesse-tutorial/zipfiles\n\n\n\n\nwget \"https://www.dropbox.com/scl/fo/vkb0srrr8cnv3k36zikh7/AELsDad7-V0WJ-hEZU4t_5k?rlkey=6a7l17psot7sl5woswapyxyn9&st=libnokp3&dl=1\"\nYou’ll likely see a long, messy filename — that’s fine! We’ll rename it next.\n\n\n\n\nUse ls to list the files in the directory:\nls\nYou should see the filename downloaded by wget. Use mv (“move”) to rename the file to something more readable:\nmv {{your_file_name}} tutorial-sequences.zip\n\n\n\n\nunzip tutorial-sequences.zip -d ../rawfastq\n\n-d specifies the target directory for unzipping\n\n\n\n\n\nMove to the rawfastq directory:\ncd ../rawfastq\nList the files:\nls\n\n\n\n\nFASTQ format stores each read in a certain numebr of lines. Let’s figure out this number by inspecting the first few lines (head for “heading”) of a file:\nzcat sample_file.fastq.gz | head -n 20\n\n\n\n\n\n\nTip\n\n\n\nThe | is called a “pipe operator”. It will insert the output of a command as the first argument to the subsequent command. In this case, we are cat-ing the content of the sample_file.fastq.gz and, simultaneously, passing this content on to the head command, with the optional flag -n which states the Number of heading lines to print. The tail command is the counterpart of head, and will print the TAILing lines of a text file.\n\n\n\nYou will see 5 complete reads on the first 20 lines. This means FASTQ format stores each read in 4 lines.\n\n\n\n\nNow that we know each read is 4 lines, we can count the number of lines in a file and divide that number by 4 to obtain the total number of raw reads:\nzcat sample_file.fastq.gz | head -n 20\n\n\n\n\n\n\nTip\n\n\n\nThe wc command comes from “word-count” and can count different aggregations of characters. In our case, by passing the -l flag, we ask that it counts the number of Lines.\n\n\nInstead of running this command mauanlly for every file, we can use a loop to print the read count for each file:\nfor file in *.fastq.gz; do\n  echo -n \"$file: \"\n  zcat \"$file\" | wc -l\ndone\n\n\n\n\n\n\nTip\n\n\n\nOn a bash terminal, the $ (dollar sign) looks up a variable name and substitutes it for the variable value in your command. So, if you have, say, a variable called OUTPUT_FILE and the value of this variable was seq001_clean.fa, calling the command\nprocess --input raw_sequence.fa --output $OUTPUT_FILE\nwould internally evaluate to\nprocess --input raw_sequence.fa --output seq001_clean.fa\n\nWhen you loop through a list like in the command\nfor file in *.fastq.gz; do\n  echo -n \"$file: \"\n  zcat \"$file\" | wc -l\ndone\nThe variable file stores each filename that matches *.fastq.gz. to reference the filename stores in the file variable, we use $file!\n\n\n\nDivide each output by 4 to get the read count.\n\n\n\n\n\n\n\n\nTip\n\n\n\nCreate a shell script later to summarize read counts automatically! One easy to do that is to pipe the result of echo to the awk command.\n\n\n\n\n\n\n\nYou used the wget command-line tool to download the sequences shared by the sequencing facility, and inspected the number of lines in each file to estimate the reading depth!\n🏅 Collect Badge: Web Wrangler",
+    "crumbs": [
+      "Downloading sequences"
+    ]
+  },
+  {
+    "objectID": "03-download.html#step-1-go-to-the-zipfiles-folder",
+    "href": "03-download.html#step-1-go-to-the-zipfiles-folder",
+    "title": "Downloading Sequences",
+    "section": "",
+    "text": "We’ll begin by downloading the data into the zipfiles directory you created earlier.\ncd ~/hesse-tutorial/zipfiles",
+    "crumbs": [
+      "Downloading sequences"
+    ]
+  },
+  {
+    "objectID": "03-download.html#step-2-download-the-file-using-wget",
+    "href": "03-download.html#step-2-download-the-file-using-wget",
+    "title": "Downloading Sequences",
+    "section": "",
+    "text": "wget \"https://www.dropbox.com/scl/fo/vkb0srrr8cnv3k36zikh7/AELsDad7-V0WJ-hEZU4t_5k?rlkey=6a7l17psot7sl5woswapyxyn9&st=libnokp3&dl=1\"\nYou’ll likely see a long, messy filename — that’s fine! We’ll rename it next.",
+    "crumbs": [
+      "Downloading sequences"
+    ]
+  },
+  {
+    "objectID": "03-download.html#step-3-rename-the-downloaded-file",
+    "href": "03-download.html#step-3-rename-the-downloaded-file",
+    "title": "Downloading Sequences",
+    "section": "",
+    "text": "Use ls to list the files in the directory:\nls\nYou should see the filename downloaded by wget. Use mv (“move”) to rename the file to something more readable:\nmv {{your_file_name}} tutorial-sequences.zip",
+    "crumbs": [
+      "Downloading sequences"
+    ]
+  },
+  {
+    "objectID": "03-download.html#step-4-unzip-the-contents-to-your-rawfastq-folder",
+    "href": "03-download.html#step-4-unzip-the-contents-to-your-rawfastq-folder",
+    "title": "Downloading Sequences",
+    "section": "",
+    "text": "unzip tutorial-sequences.zip -d ../rawfastq\n\n-d specifies the target directory for unzipping",
+    "crumbs": [
+      "Downloading sequences"
+    ]
+  },
+  {
+    "objectID": "03-download.html#step-5-explore-the-fastq-files",
+    "href": "03-download.html#step-5-explore-the-fastq-files",
+    "title": "Downloading Sequences",
+    "section": "",
+    "text": "Move to the rawfastq directory:\ncd ../rawfastq\nList the files:\nls",
+    "crumbs": [
+      "Downloading sequences"
+    ]
+  },
+  {
+    "objectID": "03-download.html#step-6-how-many-reads-per-file",
+    "href": "03-download.html#step-6-how-many-reads-per-file",
+    "title": "Downloading Sequences",
+    "section": "",
+    "text": "FASTQ format stores each read in a certain numebr of lines. Let’s figure out this number by inspecting the first few lines (head for “heading”) of a file:\nzcat sample_file.fastq.gz | head -n 20\n\n\n\n\n\n\nTip\n\n\n\nThe | is called a “pipe operator”. It will insert the output of a command as the first argument to the subsequent command. In this case, we are cat-ing the content of the sample_file.fastq.gz and, simultaneously, passing this content on to the head command, with the optional flag -n which states the Number of heading lines to print. The tail command is the counterpart of head, and will print the TAILing lines of a text file.\n\n\n\nYou will see 5 complete reads on the first 20 lines. This means FASTQ format stores each read in 4 lines.\n\n\n\n\nNow that we know each read is 4 lines, we can count the number of lines in a file and divide that number by 4 to obtain the total number of raw reads:\nzcat sample_file.fastq.gz | head -n 20\n\n\n\n\n\n\nTip\n\n\n\nThe wc command comes from “word-count” and can count different aggregations of characters. In our case, by passing the -l flag, we ask that it counts the number of Lines.\n\n\nInstead of running this command mauanlly for every file, we can use a loop to print the read count for each file:\nfor file in *.fastq.gz; do\n  echo -n \"$file: \"\n  zcat \"$file\" | wc -l\ndone\n\n\n\n\n\n\nTip\n\n\n\nOn a bash terminal, the $ (dollar sign) looks up a variable name and substitutes it for the variable value in your command. So, if you have, say, a variable called OUTPUT_FILE and the value of this variable was seq001_clean.fa, calling the command\nprocess --input raw_sequence.fa --output $OUTPUT_FILE\nwould internally evaluate to\nprocess --input raw_sequence.fa --output seq001_clean.fa\n\nWhen you loop through a list like in the command\nfor file in *.fastq.gz; do\n  echo -n \"$file: \"\n  zcat \"$file\" | wc -l\ndone\nThe variable file stores each filename that matches *.fastq.gz. to reference the filename stores in the file variable, we use $file!\n\n\n\nDivide each output by 4 to get the read count.\n\n\n\n\n\n\n\n\nTip\n\n\n\nCreate a shell script later to summarize read counts automatically! One easy to do that is to pipe the result of echo to the awk command.",
+    "crumbs": [
+      "Downloading sequences"
+    ]
+  },
+  {
+    "objectID": "03-download.html#badge-unlocked-web-wrangler",
+    "href": "03-download.html#badge-unlocked-web-wrangler",
+    "title": "Downloading Sequences",
+    "section": "",
+    "text": "You used the wget command-line tool to download the sequences shared by the sequencing facility, and inspected the number of lines in each file to estimate the reading depth!\n🏅 Collect Badge: Web Wrangler",
+    "crumbs": [
+      "Downloading sequences"
+    ]
+  },
+  {
+    "objectID": "01-welcome.html",
+    "href": "01-welcome.html",
+    "title": "📬 Welcome to HesseLab, Intern!",
+    "section": "",
+    "text": "📬 Welcome to HesseLab, Intern!\n\nFrom: Dr. L. V. Hesse lvhesse@hesselab.org\nTo: You\nSubject: Your First Assignment\nDear Intern,\nWelcome aboard! We’re thrilled to have you join HesseLab for your summer internship. Your curiosity, grit, and application stood out in the applicant pool—and we believe you’ll thrive in our high-throughput, high-stakes environment.\nYour first mission is already on the table:\n🧬 A fresh batch of sequencing data has just arrived from our partner facility.\nYou are to:\n\nSecurely retrieve and extract sequencing files\nClean, trim and quality control the sequencing data\nProfile the microbial communities taxonomically and functionally (gene functions)\n\nYou’ll be using the BioBakery suite, one of the industry’s most trusted pipelines for metagenomic profiling. In compliance with our data handling protocols and bioethics regulations, your analysis must be conducted inside the HesseHub — our secure, containerized Linux-based compute environment. All necessary tools are pre-installed in the HesseHub environment.\nI asked IT to generate your login credentials. They are pasted below:\nusername: hessehub\npassword: hessehub\nRemember: In HesseLab, we don’t just process data.\nWe reveal the invisible.\nGood luck.\n\nSincerely,\nDr. L. V. Hesse\nPrincipal Investigator, HesseLab\n\n\n\n🧭 Tutorial Roadmap\nThis tutorial will guide you through:\n\n🖥️ Setting up\n📥 Getting sequence data\n🧼 Cleaning & QCing with kneaddata\n🧬 Taxonomic Profiling with metaphlan\n🧬 Functional Profiling with humann\n\nIf this is your first time in a secure Linux workspace, don’t worry—we’ll walk you through each step.\n\n\n\n\n\n\nTip\n\n\n\n💡 Tip: Run all commands inside the HesseHub shell unless told otherwise.",
+    "crumbs": [
+      "Welcome!"
+    ]
+  },
+  {
+    "objectID": "02-workdir.html",
+    "href": "02-workdir.html",
+    "title": "🖥️ Getting Oriented in the Shell",
+    "section": "",
+    "text": "Warning\n\n\n\nYou need to be inside the Wellesley network (via campus WiFi, wired ethernet or VPN) to access HesseHub\n\n\nYou can access HesseHub by navigating to this link. Use the provided username and password (hessehub:hessehub) to log into the system, and pick the virtual machine assigned to you.\n\n\n\n\n\n\nTip\n\n\n\nMachines are identified by name. The following VMs are available: - AstuteAdenine - BrilliantBacillus - CuriousClostridium - DiligentDrosophila - ExcitedEscherichia - FastidiousFirmicute - HelpfulHaemophilus - InquisitiveInfluenza\n\n\nNow that you’ve logged into HesseHub, it’s time to get your bearings. This section will introduce basic Linux shell commands you’ll use often during your internship.\n\n\n\n\n\nDisplays your current location in the filesystem.\npwd\n\n\n\n\nLists the contents of a directory.\nls -lah\n\n\n\n\nUse cd to move around.\ncd ~\ncd ..\ncd /opt\n\n\n\n\n\nmkdir -p ~/hesse-tutorial/{zipfiles,rawfastq,kneaddata,metaphlan,humann}\ncd ~/hesse-tutorial\n\n\n\n\nWe’ve prepared a validation script to help you confirm your folder structure. You’ll personalize it by providing the location of your working directory (~/hesse-tutorial).\n\n\ncp ~/tutorial/validate-structure.sh .\n\n\n\n\nOpen the script in vim and edit line 13 according to the instructions in the file.\nvim validate-structure.sh\nLook for the lines:\n###----EDIT THE NEXT LINE WITH THE PATH/NAME OF YOUR WORKING DIRECTORY----###\n#WORKDIR={{your-work-dir}}\n###---------AFTER YOU DO IT, UNCOMMENT THE LINE (REMOVE THE \"#\")----------###\nAnd replace {your-work-dir} with a valid path to your working directory (~/hesse-tutorial). To do that, use arrow keys to navigate the file, then press the key a a single time to enter \"insert\" mode. Proceed to delete the placeholder and type in the path in question. Save and quit by pressing ESC and then typing :wq.\n\n\n\n\nchmod +x validate-structure.sh\n\n\n\n\n./validate-structure.sh\nIf your folders are correct and your intern key matches, you’ll unlock the next phase!\n\n\n\n\n\n\n\nTip\n\n\n\n💡 Tip: Shell scripting is like writing spells. Be precise, be careful, and test often.\n\n\n\n\n\n\n\nYou created your working directory and validated it with your secret intern key. You’re now certified to proceed deeper into the pipeline!\n🏅 Collect Badge: Script Sorcerer",
+    "crumbs": [
+      "Access and setup"
+    ]
+  },
+  {
+    "objectID": "02-workdir.html#navigating-the-filesystem",
+    "href": "02-workdir.html#navigating-the-filesystem",
+    "title": "🖥️ Getting Oriented in the Shell",
+    "section": "",
+    "text": "Displays your current location in the filesystem.\npwd\n\n\n\n\nLists the contents of a directory.\nls -lah\n\n\n\n\nUse cd to move around.\ncd ~\ncd ..\ncd /opt",
+    "crumbs": [
+      "Access and setup"
+    ]
+  },
+  {
+    "objectID": "02-workdir.html#creating-your-working-directory",
+    "href": "02-workdir.html#creating-your-working-directory",
+    "title": "🖥️ Getting Oriented in the Shell",
+    "section": "",
+    "text": "mkdir -p ~/hesse-tutorial/{zipfiles,rawfastq,kneaddata,metaphlan,humann}\ncd ~/hesse-tutorial",
+    "crumbs": [
+      "Access and setup"
+    ]
+  },
+  {
+    "objectID": "02-workdir.html#copy-and-customize-a-script",
+    "href": "02-workdir.html#copy-and-customize-a-script",
+    "title": "🖥️ Getting Oriented in the Shell",
+    "section": "",
+    "text": "We’ve prepared a validation script to help you confirm your folder structure. You’ll personalize it by providing the location of your working directory (~/hesse-tutorial).\n\n\ncp ~/tutorial/validate-structure.sh .\n\n\n\n\nOpen the script in vim and edit line 13 according to the instructions in the file.\nvim validate-structure.sh\nLook for the lines:\n###----EDIT THE NEXT LINE WITH THE PATH/NAME OF YOUR WORKING DIRECTORY----###\n#WORKDIR={{your-work-dir}}\n###---------AFTER YOU DO IT, UNCOMMENT THE LINE (REMOVE THE \"#\")----------###\nAnd replace {your-work-dir} with a valid path to your working directory (~/hesse-tutorial). To do that, use arrow keys to navigate the file, then press the key a a single time to enter \"insert\" mode. Proceed to delete the placeholder and type in the path in question. Save and quit by pressing ESC and then typing :wq.\n\n\n\n\nchmod +x validate-structure.sh\n\n\n\n\n./validate-structure.sh\nIf your folders are correct and your intern key matches, you’ll unlock the next phase!\n\n\n\n\n\n\n\nTip\n\n\n\n💡 Tip: Shell scripting is like writing spells. Be precise, be careful, and test often.",
+    "crumbs": [
+      "Access and setup"
+    ]
+  },
+  {
+    "objectID": "02-workdir.html#badge-unlocked-script-sorcerer",
+    "href": "02-workdir.html#badge-unlocked-script-sorcerer",
+    "title": "🖥️ Getting Oriented in the Shell",
+    "section": "",
+    "text": "You created your working directory and validated it with your secret intern key. You’re now certified to proceed deeper into the pipeline!\n🏅 Collect Badge: Script Sorcerer",
+    "crumbs": [
+      "Access and setup"
+    ]
+  },
+  {
+    "objectID": "04-kneaddata.html",
+    "href": "04-kneaddata.html",
+    "title": "KneadData - QC and Cleaning",
+    "section": "",
+    "text": "In this section, you’ll learn to run kneaddata to perform:\n\nAdapter trimming\nHost (human) sequence removal\nQuality filtering\n\n\n\n\ncd ~/hesse-tutorial/kneaddata\n\n\n\n\nkneaddata is installed as a binary executable file available for use via command-line. Many analysys software work like that - after you download and install it, you can call it using a linux command.\nWhen software developers build a new program, they usually bundle a few standard options to the command. One of them is the --version flag, which prints the software version installed/available to run. Try it:\nkneaddata --version\nAnother very common option is the --help flag, which prints out a quick help guide for the command. You can access it with:\nkneaddata --help\n\n\n\n--input: your raw FASTQ files (R1 and R2)\n--reference-db: human genome to remove host reads\n--output: directory for output files\n--threads: number of CPU threads to use\n--processes: how many samples to process in parallel (use 1 or 2)\n--output-prefix: custom prefix for output files\n--trimmomatic: location of trimming tool\n\n\n\n\n\nBelow is an example kneaddata run tailored to our system. Try to run this example, replacing :\nkneaddata \\\n  --input ../rawfastq/{{R1_file}} \\\n  --input ../rawfastq/{{R2_file}} \\\n  --reference-db /mnt/databases/kneaddata/hg37dec_v0.1 \\\n  --output ./ \\\n  --threads 2 \\\n  --processes 2 \\\n  --output-prefix {{sample_ID}}_kneaddata \\\n  --trimmomatic /opt/conda/share/trimmomatic\n\nNote: You may use fewer threads if computation resources are limited, or more threads if they are plentiful.\n\n\n\n\n\nAfter running, inspect the log file:\ncat tutorial_kneaddata_kneaddata.log\nLook for: - Total reads - Reads after trimming - Reads removed as contaminants - Reads remaining\n\n\n\n\n\n\n\n\n\n\nNote\n\n\n\nSeveral parts of this section were sourced from the original kneaddata documentation available at the KneadData github, and from the trf (Tandem Repeats Finder) documentation, available at TRF github and the TRF website.\n\n\nAfter running kneaddata ona single pair of {R1,R2} raw sequence files, you should get a collection of files starting wth the prefix you passed to kneaddata via the --output-prefix argument flag. Below is a sample collection of kneaddata outputs:\n\n{sample_ID}_kneaddata.log\n{sample_ID}_kneaddata.repeats.removed.1.fastq\n{sample_ID}_kneaddata.repeats.removed.2.fastq\n{sample_ID}_kneaddata.repeats.removed.unmatched.1.fastq\n{sample_ID}_kneaddata.repeats.removed.unmatched.2.fastq\n{sample_ID}_kneaddata.trimmed.1.fastq\n{sample_ID}_kneaddata.trimmed.2.fastq\n{sample_ID}_kneaddata.trimmed.single.1.fastq\n{sample_ID}_kneaddata.trimmed.single.2.fastq\n{sample_ID}_kneaddata_hg37dec_v0.1_bowtie2_paired_contam_1.fastq\n{sample_ID}_kneaddata_hg37dec_v0.1_bowtie2_paired_contam_2.fastq\n{sample_ID}_kneaddata_hg37dec_v0.1_bowtie2_unmatched_1_contam.fastq\n{sample_ID}_kneaddata_hg37dec_v0.1_bowtie2_unmatched_2_contam.fastq\n{sample_ID}_kneaddata_paired_1.fastq\n{sample_ID}_kneaddata_paired_2.fastq\n{sample_ID}_kneaddata_unmatched_1.fastq\n{sample_ID}_kneaddata_unmatched_2.fastq\n\nBefore we start diving into what each of those files contain, we need to understand the pair/mate relashinship between the {R1,R2} raw sequence files. The paired-end sequencer produces a pair of files in which every sequence is also paired or mated to its equivalent on the other file. Mates appear in the same position at each file, so the 10th read on the R1 file is the mate or pair of the 10th read on the R2 file.\nWhenever some filtering analysis (decontamination, trimming adapter reads, removal of tandem repeats) happens on a pair of mates, there are three scenarios possible:\nI. Both reads in the pair pass the filter II. The read in the first mate passes, but the one in the second does not pass. III. The read in the second mate passes, but the one in the first does not pass.\nIn the first case, reads will end up in the *_paired files, which will have the same size and length in the end. On cases II and III, reads will end up in the *_unmatched files.\nJust because a read was unmatched, it does not mean that it should be removed from analysis. Although the majority of QC-passing reads do end up in clean paired files, reads in the final clean unmatched files also carry biologically relevant information.\n\n\nFile (1) is the log for the kneaddata command. It keeps track of the program’s internal processed, prints out the steps performed and some mid-run validations, as well as the read counts that result from each of the splitting steps.\n\n\n\nFiles (2, 3, 4 and 5) contain the tandem repeats removed by trf. While 2 and 3 contain paired/matched tandem repeats, 3 and 4 contain unpaired/unmatched tandem repeats. Those reads should not be used for metagenomic profiling.\n\n\n\n\n\n\nUnderstading Tandem Repeats\n\n\n\n\n\nTandem repeats are regions in DNA where a short nucleotide sequence is repeated consecutively.\nImagine you have a stretch of DNA where a short sequence - say, “ACGT” - is repeated several times in a row (e.g., ACGTACGTACGT). When a sequencing machine produces a short read from within this repeated region, that read might be something like “ACGTACGT.” Because the repeated sequence is identical (or nearly identical) across multiple copies, that same read could originate from any one of the repeated segments.\nThis could cause ambiguity in mapping the sequence to genomes. A short read from a tandem repeat lacks the unique flanking sequences that typically help to pinpoint its exact location. If a read is entirely made up of the repeated motif, every copy of the repeat in the genome is an equally good match.\nAdditionally, read mapping tools align each read to the reference genome by looking for the best match. In the case of tandem repeats, the read will perfectly match several locations where the repeat occurs. The mapper might then assign the read randomly to one location, report all possible locations, or lower the confidence (mapping quality) of that read because it can’t decide which location is the true source.\nThis ambiguity means that the read doesn’t provide reliable information about its true origin. When many reads from tandem repeats are mapped in this way, it can lead to misrepresentation of sequence abundance and skew the analysis, making it difficult to accurately profile the metagenome.\nIn summary, because the repeated sequence is present in multiple, nearly identical copies, the mapping algorithms cannot distinguish which copy the read came from. This results in the read “mapping” to several locations, thus introducing uncertainty into the analysis.\n\n\n\n\n\n\nFiles (6, 7, 8 and 9) contain the trimmed adapter reads removed by trimmomatic. While 2 and 3 contain paired/matched trimmed adapter reads, 3 and 4 contain unpaired/unmatched trimmed adapter reads. Those reads should not be used for metagenomic profiling.\n\n\n\n\n\n\nUnderstading Adapter Reads\n\n\n\n\n\nAdapter sequences are synthetic DNA fragments added to your sample DNA during library preparation to facilitate sequencing. When the sequencer reads past the insert—especially if the insert is short—it can start reading these adapter sequences. Adapter sequences are artificial and do not belong to the organism’s genome. If left untrimmed, they become part of your read data and can mislead downstream analyses, as they do not represent any genuine biological signal.\nIf the adapter segment is not removed fromthe read, the adapter portion may not align properly to the reference genome. This results in poor-quality alignments or even mismapping. The alignment algorithms might interpret the adapter sequence as part of the biological sequence, which could lead to errors in identifying the true genomic location.\n\nAlso, adapter regions typically have lower quality scores. Retaining these low-quality bases can decrease the overall quality of the dataset and introduce noise into the analysis.\nBy trimming adapter sequences, you ensure that only the genuine sample DNA is used in subsequent analyses, which improves the accuracy of read mapping and the reliability of your metagenomic profiling.\n\n\n\n\n\n\nFiles (10, 11, 12 and 13) contain the sequence reads that map to the human genome. Those reads should not be used for metagenomic profiling.\n\n\n\n\n\n\nUnderstading Human Reads\n\n\n\n\n\nhg37 is a short name that references the GRCh37 Genome Reference Consortium Human Build 37. It is a database that contains the humangenome.\nIn many metagenomic samples, especially those taken from human-associated environments (e.g., gut, skin, or clinical samples), a significant portion of the reads can originate from the host rather than the microbial community. Removing reads that map to hg37 is therefore a critical step to ensure that analyses focus on the microbial content.\nRetaining host DNA can lead to misleading results by diluting the signal from microbial genomes. When human reads are present, they may falsely elevate background noise, complicate the detection of low-abundance organisms, and skew abundance estimates.\nAlso, Filtering out human reads reduces the overall data volume, allowing downstream analyses such as taxonomic classification and assembly to be more efficient and focused solely on the sequences of interest.\nIn summary, removing reads that map to the human genome ensures that the analysis remains targeted, accurate, and ethical, focusing solely on the microbial sequences while reducing potential contamination and data processing burdens.\n\n\n\n\n\n\n\n\n\nWarning\n\n\n\nThe most important aspect of human data removal belongs in a separate callout: Human genetic data is sensitive! By removing reads that map to hg37, researchers not only comply with privacy standards but also mitigate risks associated with handling identifiable human genetic information.\nTo perform downstream analysis that includes human reads for any reason, the ethical and security requirements are severely esclated, sometimes requiring extremely isolated and closely-controlled computational environments - even more restrictive than HesseHub! 😉\n\n\n\n\n\nFinally, files (14, 15, 16 and 17) contain the reads that passed all operations, and should contain only the biologicallymeaningful, non-human, non-repeated reads. Those reads are the only ones that should be used for metagenomic profiling!\n\n\n\n\nNow that you understand the composition of output files, you can optionally clean up intermediate files (trimmed, repeats, and bowtie2 host-alignments):\nrm *trimmed* *repeats* *bowtie2*\n\n\n\n\n\n\nTip\n\n\n\nThe rm (from “ReMove”) command will delete all files matching the patterns provided as arguments\n\n\n\nThis helps save space and reduces clutter for the next steps.\nRemoving human reads also has the added benefit of relieving your storage of dealing with human-mapping reads, which could have escalated storage requirements.\n\nWe can save even more space if we compress the .fastq files using gzip. After you use ls to confirm that only the *paired* and *unmatched* file remained from executing rm, you can run the following ocmmand to gzip all fastq files:\ngzip *.fastq\n\n\n\n\nYou used kneaddata to trim, decontaminate and remove tandem repeats from the downloaded sequences, and are ready to perform profiling on the clean sequence files!\n🏅 Collect Badge: Clean Commander",
+    "crumbs": [
+      "KneadData - QC and cleaning"
+    ]
+  },
+  {
+    "objectID": "04-kneaddata.html#step-1-move-into-your-kneaddata-directory",
+    "href": "04-kneaddata.html#step-1-move-into-your-kneaddata-directory",
+    "title": "KneadData - QC and Cleaning",
+    "section": "",
+    "text": "cd ~/hesse-tutorial/kneaddata",
+    "crumbs": [
+      "KneadData - QC and cleaning"
+    ]
+  },
+  {
+    "objectID": "04-kneaddata.html#step-2-understand-the-key-arguments",
+    "href": "04-kneaddata.html#step-2-understand-the-key-arguments",
+    "title": "KneadData - QC and Cleaning",
+    "section": "",
+    "text": "kneaddata is installed as a binary executable file available for use via command-line. Many analysys software work like that - after you download and install it, you can call it using a linux command.\nWhen software developers build a new program, they usually bundle a few standard options to the command. One of them is the --version flag, which prints the software version installed/available to run. Try it:\nkneaddata --version\nAnother very common option is the --help flag, which prints out a quick help guide for the command. You can access it with:\nkneaddata --help\n\n\n\n--input: your raw FASTQ files (R1 and R2)\n--reference-db: human genome to remove host reads\n--output: directory for output files\n--threads: number of CPU threads to use\n--processes: how many samples to process in parallel (use 1 or 2)\n--output-prefix: custom prefix for output files\n--trimmomatic: location of trimming tool",
+    "crumbs": [
+      "KneadData - QC and cleaning"
+    ]
+  },
+  {
+    "objectID": "04-kneaddata.html#step-3-run-kneaddata",
+    "href": "04-kneaddata.html#step-3-run-kneaddata",
+    "title": "KneadData - QC and Cleaning",
+    "section": "",
+    "text": "Below is an example kneaddata run tailored to our system. Try to run this example, replacing :\nkneaddata \\\n  --input ../rawfastq/{{R1_file}} \\\n  --input ../rawfastq/{{R2_file}} \\\n  --reference-db /mnt/databases/kneaddata/hg37dec_v0.1 \\\n  --output ./ \\\n  --threads 2 \\\n  --processes 2 \\\n  --output-prefix {{sample_ID}}_kneaddata \\\n  --trimmomatic /opt/conda/share/trimmomatic\n\nNote: You may use fewer threads if computation resources are limited, or more threads if they are plentiful.",
+    "crumbs": [
+      "KneadData - QC and cleaning"
+    ]
+  },
+  {
+    "objectID": "04-kneaddata.html#step-4-check-the-log-file",
+    "href": "04-kneaddata.html#step-4-check-the-log-file",
+    "title": "KneadData - QC and Cleaning",
+    "section": "",
+    "text": "After running, inspect the log file:\ncat tutorial_kneaddata_kneaddata.log\nLook for: - Total reads - Reads after trimming - Reads removed as contaminants - Reads remaining",
+    "crumbs": [
+      "KneadData - QC and cleaning"
+    ]
+  },
+  {
+    "objectID": "04-kneaddata.html#step-5-understand-the-output-files",
+    "href": "04-kneaddata.html#step-5-understand-the-output-files",
+    "title": "KneadData - QC and Cleaning",
+    "section": "",
+    "text": "Note\n\n\n\nSeveral parts of this section were sourced from the original kneaddata documentation available at the KneadData github, and from the trf (Tandem Repeats Finder) documentation, available at TRF github and the TRF website.\n\n\nAfter running kneaddata ona single pair of {R1,R2} raw sequence files, you should get a collection of files starting wth the prefix you passed to kneaddata via the --output-prefix argument flag. Below is a sample collection of kneaddata outputs:\n\n{sample_ID}_kneaddata.log\n{sample_ID}_kneaddata.repeats.removed.1.fastq\n{sample_ID}_kneaddata.repeats.removed.2.fastq\n{sample_ID}_kneaddata.repeats.removed.unmatched.1.fastq\n{sample_ID}_kneaddata.repeats.removed.unmatched.2.fastq\n{sample_ID}_kneaddata.trimmed.1.fastq\n{sample_ID}_kneaddata.trimmed.2.fastq\n{sample_ID}_kneaddata.trimmed.single.1.fastq\n{sample_ID}_kneaddata.trimmed.single.2.fastq\n{sample_ID}_kneaddata_hg37dec_v0.1_bowtie2_paired_contam_1.fastq\n{sample_ID}_kneaddata_hg37dec_v0.1_bowtie2_paired_contam_2.fastq\n{sample_ID}_kneaddata_hg37dec_v0.1_bowtie2_unmatched_1_contam.fastq\n{sample_ID}_kneaddata_hg37dec_v0.1_bowtie2_unmatched_2_contam.fastq\n{sample_ID}_kneaddata_paired_1.fastq\n{sample_ID}_kneaddata_paired_2.fastq\n{sample_ID}_kneaddata_unmatched_1.fastq\n{sample_ID}_kneaddata_unmatched_2.fastq\n\nBefore we start diving into what each of those files contain, we need to understand the pair/mate relashinship between the {R1,R2} raw sequence files. The paired-end sequencer produces a pair of files in which every sequence is also paired or mated to its equivalent on the other file. Mates appear in the same position at each file, so the 10th read on the R1 file is the mate or pair of the 10th read on the R2 file.\nWhenever some filtering analysis (decontamination, trimming adapter reads, removal of tandem repeats) happens on a pair of mates, there are three scenarios possible:\nI. Both reads in the pair pass the filter II. The read in the first mate passes, but the one in the second does not pass. III. The read in the second mate passes, but the one in the first does not pass.\nIn the first case, reads will end up in the *_paired files, which will have the same size and length in the end. On cases II and III, reads will end up in the *_unmatched files.\nJust because a read was unmatched, it does not mean that it should be removed from analysis. Although the majority of QC-passing reads do end up in clean paired files, reads in the final clean unmatched files also carry biologically relevant information.\n\n\nFile (1) is the log for the kneaddata command. It keeps track of the program’s internal processed, prints out the steps performed and some mid-run validations, as well as the read counts that result from each of the splitting steps.\n\n\n\nFiles (2, 3, 4 and 5) contain the tandem repeats removed by trf. While 2 and 3 contain paired/matched tandem repeats, 3 and 4 contain unpaired/unmatched tandem repeats. Those reads should not be used for metagenomic profiling.\n\n\n\n\n\n\nUnderstading Tandem Repeats\n\n\n\n\n\nTandem repeats are regions in DNA where a short nucleotide sequence is repeated consecutively.\nImagine you have a stretch of DNA where a short sequence - say, “ACGT” - is repeated several times in a row (e.g., ACGTACGTACGT). When a sequencing machine produces a short read from within this repeated region, that read might be something like “ACGTACGT.” Because the repeated sequence is identical (or nearly identical) across multiple copies, that same read could originate from any one of the repeated segments.\nThis could cause ambiguity in mapping the sequence to genomes. A short read from a tandem repeat lacks the unique flanking sequences that typically help to pinpoint its exact location. If a read is entirely made up of the repeated motif, every copy of the repeat in the genome is an equally good match.\nAdditionally, read mapping tools align each read to the reference genome by looking for the best match. In the case of tandem repeats, the read will perfectly match several locations where the repeat occurs. The mapper might then assign the read randomly to one location, report all possible locations, or lower the confidence (mapping quality) of that read because it can’t decide which location is the true source.\nThis ambiguity means that the read doesn’t provide reliable information about its true origin. When many reads from tandem repeats are mapped in this way, it can lead to misrepresentation of sequence abundance and skew the analysis, making it difficult to accurately profile the metagenome.\nIn summary, because the repeated sequence is present in multiple, nearly identical copies, the mapping algorithms cannot distinguish which copy the read came from. This results in the read “mapping” to several locations, thus introducing uncertainty into the analysis.\n\n\n\n\n\n\nFiles (6, 7, 8 and 9) contain the trimmed adapter reads removed by trimmomatic. While 2 and 3 contain paired/matched trimmed adapter reads, 3 and 4 contain unpaired/unmatched trimmed adapter reads. Those reads should not be used for metagenomic profiling.\n\n\n\n\n\n\nUnderstading Adapter Reads\n\n\n\n\n\nAdapter sequences are synthetic DNA fragments added to your sample DNA during library preparation to facilitate sequencing. When the sequencer reads past the insert—especially if the insert is short—it can start reading these adapter sequences. Adapter sequences are artificial and do not belong to the organism’s genome. If left untrimmed, they become part of your read data and can mislead downstream analyses, as they do not represent any genuine biological signal.\nIf the adapter segment is not removed fromthe read, the adapter portion may not align properly to the reference genome. This results in poor-quality alignments or even mismapping. The alignment algorithms might interpret the adapter sequence as part of the biological sequence, which could lead to errors in identifying the true genomic location.\n\nAlso, adapter regions typically have lower quality scores. Retaining these low-quality bases can decrease the overall quality of the dataset and introduce noise into the analysis.\nBy trimming adapter sequences, you ensure that only the genuine sample DNA is used in subsequent analyses, which improves the accuracy of read mapping and the reliability of your metagenomic profiling.\n\n\n\n\n\n\nFiles (10, 11, 12 and 13) contain the sequence reads that map to the human genome. Those reads should not be used for metagenomic profiling.\n\n\n\n\n\n\nUnderstading Human Reads\n\n\n\n\n\nhg37 is a short name that references the GRCh37 Genome Reference Consortium Human Build 37. It is a database that contains the humangenome.\nIn many metagenomic samples, especially those taken from human-associated environments (e.g., gut, skin, or clinical samples), a significant portion of the reads can originate from the host rather than the microbial community. Removing reads that map to hg37 is therefore a critical step to ensure that analyses focus on the microbial content.\nRetaining host DNA can lead to misleading results by diluting the signal from microbial genomes. When human reads are present, they may falsely elevate background noise, complicate the detection of low-abundance organisms, and skew abundance estimates.\nAlso, Filtering out human reads reduces the overall data volume, allowing downstream analyses such as taxonomic classification and assembly to be more efficient and focused solely on the sequences of interest.\nIn summary, removing reads that map to the human genome ensures that the analysis remains targeted, accurate, and ethical, focusing solely on the microbial sequences while reducing potential contamination and data processing burdens.\n\n\n\n\n\n\n\n\n\nWarning\n\n\n\nThe most important aspect of human data removal belongs in a separate callout: Human genetic data is sensitive! By removing reads that map to hg37, researchers not only comply with privacy standards but also mitigate risks associated with handling identifiable human genetic information.\nTo perform downstream analysis that includes human reads for any reason, the ethical and security requirements are severely esclated, sometimes requiring extremely isolated and closely-controlled computational environments - even more restrictive than HesseHub! 😉\n\n\n\n\n\nFinally, files (14, 15, 16 and 17) contain the reads that passed all operations, and should contain only the biologicallymeaningful, non-human, non-repeated reads. Those reads are the only ones that should be used for metagenomic profiling!",
+    "crumbs": [
+      "KneadData - QC and cleaning"
+    ]
+  },
+  {
+    "objectID": "04-kneaddata.html#step-6-remove-unnecessary-files-and-compress-outputs",
+    "href": "04-kneaddata.html#step-6-remove-unnecessary-files-and-compress-outputs",
+    "title": "KneadData - QC and Cleaning",
+    "section": "",
+    "text": "Now that you understand the composition of output files, you can optionally clean up intermediate files (trimmed, repeats, and bowtie2 host-alignments):\nrm *trimmed* *repeats* *bowtie2*\n\n\n\n\n\n\nTip\n\n\n\nThe rm (from “ReMove”) command will delete all files matching the patterns provided as arguments\n\n\n\nThis helps save space and reduces clutter for the next steps.\nRemoving human reads also has the added benefit of relieving your storage of dealing with human-mapping reads, which could have escalated storage requirements.\n\nWe can save even more space if we compress the .fastq files using gzip. After you use ls to confirm that only the *paired* and *unmatched* file remained from executing rm, you can run the following ocmmand to gzip all fastq files:\ngzip *.fastq",
+    "crumbs": [
+      "KneadData - QC and cleaning"
+    ]
+  },
+  {
+    "objectID": "04-kneaddata.html#badge-unlocked-clean-commander",
+    "href": "04-kneaddata.html#badge-unlocked-clean-commander",
+    "title": "KneadData - QC and Cleaning",
+    "section": "",
+    "text": "You used kneaddata to trim, decontaminate and remove tandem repeats from the downloaded sequences, and are ready to perform profiling on the clean sequence files!\n🏅 Collect Badge: Clean Commander",
+    "crumbs": [
+      "KneadData - QC and cleaning"
+    ]
+  },
+  {
+    "objectID": "06-humann.html",
+    "href": "06-humann.html",
+    "title": "HUMAnN - Functional Profiling",
+    "section": "",
+    "text": "HUMAnN is used to determine which gene families and metabolic pathways are present in a microbial community.\nIt takes cleaned FASTQ files and a MetaPhlAn taxonomic profile, and maps them to UniRef90 gene families using translated search, before regrouping those into more interpretable annotations.\n\n\n\n\n\n\nWhat are UniRef90s?\n\n\n\nUniRef90 clusters are groups of protein sequences from the UniProt database that share at least 90% sequence identity. This high level of similarity means that each cluster essentially represents a “gene family”—a set of homologous proteins that likely perform similar functions. By clustering redundant sequences together, UniRef90 simplifies large protein datasets, making them more computationally manageable while preserving essential functional diversity.\nThese clusters are crucial in comparative genomics and metagenomic profiling because they allow researchers to collapse highly similar sequences into representative groups. This not only speeds up computational analyses but also highlights conserved protein functions across different organisms. In this way, UniRef90 clusters provide a streamlined yet comprehensive snapshot of the protein universe, similar in purpose to other functional classification systems like KOs and PFAMs.\n\n\n\n\n\ncd ~/hesse-tutorial/humann\nmkdir -p main regroup rename\n\n\n\n\nhumann \\\n  --input ../metaphlan/{{sample_ID}}sample.joined.fastq.gz \\\n  --taxonomic-profile ../metaphlan/{{sample_ID}}_profile.tsv \\\n  --output ./main \\\n  --remove-temp-output \\\n  --search-mode uniref90 \\\n  --output-basename sample \\\n  --threads 4\n\n\n\n\n\n*_genefamilies.tsv: Relative abundances of UniRef90 gene families\n*_pathabundance.tsv: Pathway abundance estimates\n*_pathcoverage.tsv: Pathway completeness information\n\n\n\n\n\nUniRef90 IDs are precise but not very human-friendly. We can regroup these into more interpretable terms:\n\nEC (Enzyme Commission numbers): Group enzymes by their catalytic functions\nKO (KEGG Orthologs): Group genes into functional modules/pathways\nPfam: Protein families based on conserved domains\n\nUse humann_regroup_table to perform this:\nhumann_regroup_table -i main/sample_genefamilies.tsv -g uniref90_level4ec -o regroup/sample_ecs.tsv\nhumann_regroup_table -i main/sample_genefamilies.tsv -g uniref90_ko -o regroup/sample_kos.tsv\nhumann_regroup_table -i main/sample_genefamilies.tsv -g uniref90_pfam -o regroup/sample_pfams.tsv\n\n\n\n\nUse humann_rename_table to turn IDs into readable names:\nhumann_rename_table -i regroup/sample_ecs.tsv -n ec -o rename/sample_ecs_rename.tsv\nhumann_rename_table -i regroup/sample_kos.tsv -n kegg-orthology -o rename/sample_kos_rename.tsv\nhumann_rename_table -i regroup/sample_pfams.tsv -n pfam -o rename/sample_pfams_rename.tsv\nNow your output files include clean functional labels you can actually interpret.\n\n\n\n\n\n\n\n\n\n\n\n\nCode\nMeaning\nDescription\n\n\n\n\nEC\nEnzyme Commission\nGroups enzymes by reaction type (e.g., oxidoreductases, transferases)\n\n\nKO\nKEGG Orthology\nFunctional gene groups in known pathways\n\n\nPfam\nProtein family\nConserved domains shared by similar proteins\n\n\n\n\n\n\n\nYou’ve transformed abstract gene family data into meaningful biological functions. The data no longer lies dormant — it has been forged into biological insight. All gene functions bow before you, forgemaster.\n🏅 Collect Badge: Function Forger",
+    "crumbs": [
+      "HUMAnN - Functional profiling"
+    ]
+  },
+  {
+    "objectID": "06-humann.html#step-1-create-output-directories",
+    "href": "06-humann.html#step-1-create-output-directories",
+    "title": "HUMAnN - Functional Profiling",
+    "section": "",
+    "text": "cd ~/hesse-tutorial/humann\nmkdir -p main regroup rename",
+    "crumbs": [
+      "HUMAnN - Functional profiling"
+    ]
+  },
+  {
+    "objectID": "06-humann.html#step-2-run-humann",
+    "href": "06-humann.html#step-2-run-humann",
+    "title": "HUMAnN - Functional Profiling",
+    "section": "",
+    "text": "humann \\\n  --input ../metaphlan/{{sample_ID}}sample.joined.fastq.gz \\\n  --taxonomic-profile ../metaphlan/{{sample_ID}}_profile.tsv \\\n  --output ./main \\\n  --remove-temp-output \\\n  --search-mode uniref90 \\\n  --output-basename sample \\\n  --threads 4",
+    "crumbs": [
+      "HUMAnN - Functional profiling"
+    ]
+  },
+  {
+    "objectID": "06-humann.html#step-3-explore-the-output",
+    "href": "06-humann.html#step-3-explore-the-output",
+    "title": "HUMAnN - Functional Profiling",
+    "section": "",
+    "text": "*_genefamilies.tsv: Relative abundances of UniRef90 gene families\n*_pathabundance.tsv: Pathway abundance estimates\n*_pathcoverage.tsv: Pathway completeness information",
+    "crumbs": [
+      "HUMAnN - Functional profiling"
+    ]
+  },
+  {
+    "objectID": "06-humann.html#step-4-regroup-gene-families",
+    "href": "06-humann.html#step-4-regroup-gene-families",
+    "title": "HUMAnN - Functional Profiling",
+    "section": "",
+    "text": "UniRef90 IDs are precise but not very human-friendly. We can regroup these into more interpretable terms:\n\nEC (Enzyme Commission numbers): Group enzymes by their catalytic functions\nKO (KEGG Orthologs): Group genes into functional modules/pathways\nPfam: Protein families based on conserved domains\n\nUse humann_regroup_table to perform this:\nhumann_regroup_table -i main/sample_genefamilies.tsv -g uniref90_level4ec -o regroup/sample_ecs.tsv\nhumann_regroup_table -i main/sample_genefamilies.tsv -g uniref90_ko -o regroup/sample_kos.tsv\nhumann_regroup_table -i main/sample_genefamilies.tsv -g uniref90_pfam -o regroup/sample_pfams.tsv",
+    "crumbs": [
+      "HUMAnN - Functional profiling"
+    ]
+  },
+  {
+    "objectID": "06-humann.html#step-5-rename-gene-ids-to-readable-labels",
+    "href": "06-humann.html#step-5-rename-gene-ids-to-readable-labels",
+    "title": "HUMAnN - Functional Profiling",
+    "section": "",
+    "text": "Use humann_rename_table to turn IDs into readable names:\nhumann_rename_table -i regroup/sample_ecs.tsv -n ec -o rename/sample_ecs_rename.tsv\nhumann_rename_table -i regroup/sample_kos.tsv -n kegg-orthology -o rename/sample_kos_rename.tsv\nhumann_rename_table -i regroup/sample_pfams.tsv -n pfam -o rename/sample_pfams_rename.tsv\nNow your output files include clean functional labels you can actually interpret.",
+    "crumbs": [
+      "HUMAnN - Functional profiling"
+    ]
+  },
+  {
+    "objectID": "06-humann.html#summary-of-functional-annotation-types",
+    "href": "06-humann.html#summary-of-functional-annotation-types",
+    "title": "HUMAnN - Functional Profiling",
+    "section": "",
+    "text": "Code\nMeaning\nDescription\n\n\n\n\nEC\nEnzyme Commission\nGroups enzymes by reaction type (e.g., oxidoreductases, transferases)\n\n\nKO\nKEGG Orthology\nFunctional gene groups in known pathways\n\n\nPfam\nProtein family\nConserved domains shared by similar proteins",
+    "crumbs": [
+      "HUMAnN - Functional profiling"
+    ]
+  },
+  {
+    "objectID": "06-humann.html#badge-unlocked-function-forger",
+    "href": "06-humann.html#badge-unlocked-function-forger",
+    "title": "HUMAnN - Functional Profiling",
+    "section": "",
+    "text": "You’ve transformed abstract gene family data into meaningful biological functions. The data no longer lies dormant — it has been forged into biological insight. All gene functions bow before you, forgemaster.\n🏅 Collect Badge: Function Forger",
+    "crumbs": [
+      "HUMAnN - Functional profiling"
+    ]
+  }
+]

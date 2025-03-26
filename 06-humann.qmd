@@ -1,0 +1,115 @@
+---
+title: "HUMAnN - Functional Profiling"
+format: html
+---
+
+# 🧬 Functional Profiling with HUMAnN
+
+HUMAnN is used to determine **which gene families** and **metabolic pathways** are present in a microbial community.
+
+It takes cleaned FASTQ files and a MetaPhlAn taxonomic profile, and maps them to **UniRef90** gene families using translated search, before regrouping those into more interpretable annotations.
+
+::: callout-note
+# What are UniRef90s?
+UniRef90 clusters are groups of protein sequences from the UniProt database that share at least 90% sequence identity. This high level of similarity means that each cluster essentially represents a "gene family"—a set of homologous proteins that likely perform similar functions. By clustering redundant sequences together, UniRef90 simplifies large protein datasets, making them more computationally manageable while preserving essential functional diversity.
+
+These clusters are crucial in comparative genomics and metagenomic profiling because they allow researchers to collapse highly similar sequences into representative groups. This not only speeds up computational analyses but also highlights conserved protein functions across different organisms. In this way, UniRef90 clusters provide a streamlined yet comprehensive snapshot of the protein universe, similar in purpose to other functional classification systems like KOs and PFAMs.
+:::
+
+---
+
+## 📂 Step 1: Create output directories
+
+```bash
+cd ~/hesse-tutorial/humann
+mkdir -p main regroup rename
+```
+
+---
+
+## 🚀 Step 2: Run HUMAnN
+
+```bash
+humann \
+  --input ../metaphlan/{{sample_ID}}sample.joined.fastq.gz \
+  --taxonomic-profile ../metaphlan/{{sample_ID}}_profile.tsv \
+  --output ./main \
+  --remove-temp-output \
+  --search-mode uniref90 \
+  --output-basename sample \
+  --threads 4
+```
+
+---
+
+## 📄 Step 3: Explore the output
+
+- `*_genefamilies.tsv`: Relative abundances of UniRef90 gene families
+- `*_pathabundance.tsv`: Pathway abundance estimates
+- `*_pathcoverage.tsv`: Pathway completeness information
+
+---
+
+## 🔁 Step 4: Regroup gene families
+
+UniRef90 IDs are precise but not very human-friendly. We can **regroup** these into more interpretable terms:
+
+- **EC (Enzyme Commission numbers)**: Group enzymes by their catalytic functions
+- **KO (KEGG Orthologs)**: Group genes into functional modules/pathways
+- **Pfam**: Protein families based on conserved domains
+
+Use `humann_regroup_table` to perform this:
+
+```bash
+humann_regroup_table -i main/sample_genefamilies.tsv -g uniref90_level4ec -o regroup/sample_ecs.tsv
+humann_regroup_table -i main/sample_genefamilies.tsv -g uniref90_ko -o regroup/sample_kos.tsv
+humann_regroup_table -i main/sample_genefamilies.tsv -g uniref90_pfam -o regroup/sample_pfams.tsv
+```
+
+---
+
+## 🔤 Step 5: Rename gene IDs to readable labels
+
+Use `humann_rename_table` to turn IDs into readable names:
+
+```bash
+humann_rename_table -i regroup/sample_ecs.tsv -n ec -o rename/sample_ecs_rename.tsv
+humann_rename_table -i regroup/sample_kos.tsv -n kegg-orthology -o rename/sample_kos_rename.tsv
+humann_rename_table -i regroup/sample_pfams.tsv -n pfam -o rename/sample_pfams_rename.tsv
+```
+
+Now your output files include clean functional labels you can actually interpret.
+
+---
+
+## 🧪 Summary of Functional Annotation Types
+
+| Code | Meaning | Description |
+|------|---------|-------------|
+| **EC** | Enzyme Commission | Groups enzymes by reaction type (e.g., oxidoreductases, transferases) |
+| **KO** | KEGG Orthology | Functional gene groups in known pathways |
+| **Pfam** | Protein family | Conserved domains shared by similar proteins |
+
+---
+
+## 🏅 Badge Unlocked: 🔥 Function Forger
+
+You’ve transformed abstract gene family data into meaningful biological functions.
+The data no longer lies dormant — it has been forged into biological insight. _All gene functions bow before you, forgemaster._
+
+```{=html}
+<button onclick="collectBadge('function-forger')">🏅 Collect Badge: Function Forger</button>
+
+<script>
+function collectBadge(badgeName) {
+  const badges = JSON.parse(localStorage.getItem('badges') || '[]');
+  if (!badges.includes(badgeName)) {
+    badges.push(badgeName);
+    localStorage.setItem('badges', JSON.stringify(badges));
+    alert('Badge collected: ' + badgeName);
+  } else {
+    alert('You already collected this badge!');
+  }
+}
+</script>
+```

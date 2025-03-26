@@ -1,0 +1,144 @@
+---
+format: html
+---
+
+# 🖥️ Getting Oriented in the Shell
+
+::: callout-warning
+You need to be inside the Wellesley network (via campus WiFi, wired ethernet or VPN) to access `HesseHub`
+:::
+
+You can access **HesseHub** by navigating to [this link](http://10.131.0.41:8080/guacamole). Use the provided username and password (`hessehub:hessehub`) to log into the system, and pick the virtual machine assigned to you.
+
+::: callout-tip
+Machines are identified by name. The following VMs are available:
+- `AstuteAdenine`
+- `BrilliantBacillus`
+- `CuriousClostridium`
+- `DiligentDrosophila`
+- `ExcitedEscherichia`
+- `FastidiousFirmicute`
+- `HelpfulHaemophilus`
+- `InquisitiveInfluenza`
+:::
+
+Now that you've logged into **HesseHub**, it's time to get your bearings. This section will introduce basic Linux shell commands you’ll use often during your internship.
+
+---
+
+## 🧭 Navigating the Filesystem
+
+### 🔹 `pwd` — "print working directory"
+Displays your current location in the filesystem.
+
+```bash
+pwd
+```
+
+---
+
+### 🔹 `ls` — "list"
+Lists the contents of a directory.
+
+```bash
+ls -lah
+```
+
+---
+
+### 🔹 `cd` — "change directory"
+Use `cd` to move around.
+
+```bash
+cd ~
+cd ..
+cd /opt
+```
+
+---
+
+## 🗂️ Creating Your Working Directory
+
+```bash
+mkdir -p ~/hesse-tutorial/{zipfiles,rawfastq,kneaddata,metaphlan,humann}
+cd ~/hesse-tutorial
+```
+
+---
+
+## 📋 Copy and Customize a Script
+
+We’ve prepared a validation script to help you confirm your folder structure. You’ll personalize it by providing the location of your working directory (`~/hesse-tutorial`).
+
+### 🔹 Step 1: Copy the script
+
+```bash
+cp ~/tutorial/validate-structure.sh .
+```
+
+---
+
+### 🔹 Step 2: Edit the validation script
+
+Open the script in `vim` and edit line 13 according to the instructions in the file.
+
+```bash
+vim validate-structure.sh
+```
+
+Look for the lines:
+
+```bash
+###----EDIT THE NEXT LINE WITH THE PATH/NAME OF YOUR WORKING DIRECTORY----###
+#WORKDIR={{your-work-dir}}
+###---------AFTER YOU DO IT, UNCOMMENT THE LINE (REMOVE THE "#")----------###
+```
+
+And replace `{{your-work-dir}}` with a valid path to your working directory (`~/hesse-tutorial`). To do that, use arrow keys to navigate the file, then press the key `a` a single time to enter `"insert"` mode. Proceed to delete the placeholder and type in the path in question. Save and quit by pressing `ESC` and then typing `:wq`.
+
+---
+
+### 🔹 Step 3: Make it executable
+
+```bash
+chmod +x validate-structure.sh
+```
+
+---
+
+### 🔹 Step 4: Run it
+
+```bash
+./validate-structure.sh
+```
+
+If your folders are correct and your intern key matches, you'll unlock the next phase!
+
+---
+
+::: callout-tip
+💡 Tip: Shell scripting is like writing spells. Be precise, be careful, and test often.
+:::
+
+---
+
+## 🏅 Badge Unlocked: 🏗️ Script Sorcerer
+
+You created your working directory and validated it with your secret intern key. You're now certified to proceed deeper into the pipeline!
+
+```{=html}
+<button onclick="collectBadge('script-sorcerer')">🏅 Collect Badge: Script Sorcerer</button>
+
+<script>
+function collectBadge(badgeName) {
+  const badges = JSON.parse(localStorage.getItem('badges') || '[]');
+  if (!badges.includes(badgeName)) {
+    badges.push(badgeName);
+    localStorage.setItem('badges', JSON.stringify(badges));
+    alert('Badge collected: ' + badgeName);
+  } else {
+    alert('You already collected this badge!');
+  }
+}
+</script>
+```
